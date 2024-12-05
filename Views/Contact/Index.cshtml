@@ -4,81 +4,65 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Lista de Invitados</h1>
+<div class="container py-4">
+    <h1 class="text-center mb-4">Lista de Invitados</h1>
 
-<!-- Formulario de búsqueda -->
-<form method="get" asp-action="Index">
-    <div class="input-group mb-3">
-        <input type="text" class="form-control" name="searchTerm" placeholder="Buscar por nombre, DNI..." value="@ViewData["SearchTerm"]" />
-        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+    <!-- Formulario de búsqueda -->
+    <form method="get" asp-action="Index" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" name="searchTerm" placeholder="Buscar por nombre, DNI..." value="@ViewData["SearchTerm"]" />
+            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+        </div>
+    </form>
+
+    <!-- Botón para crear un nuevo invitado -->
+    <div class="mb-3 text-end">
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-person-plus"></i> Nuevo Invitado
+        </a>
     </div>
-</form>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Nuevo Invitado</a>
-</p>
-
-<!-- Tabla de contactos -->
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dni)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Position)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CompanyName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CocktailCandidate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AttendedExpotec)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Dni)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CompanyName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CocktailCandidate)
-                </td>
-                <td>
-                    <!-- Mostrar "AttendedExpotec" -->
-                    @Html.DisplayFor(modelItem => item.AttendedExpotec)
-                </td>
-                <td>
-                    @if (!item.AttendedExpotec.HasValue || item.AttendedExpotec == false)
-                    {
-                        <!-- Botón para marcar asistencia solo si aún no se ha marcado -->
-                        <a asp-action="MarkAttendance" asp-route-id="@item.Id" class="btn btn-success">Marcar Asistencia</a>
-                    }
-                    else
-                    {
-                        <!-- Mostrar "Asistencia Confirmada" si ya fue marcado -->
-                        <span>Asistencia Confirmada</span>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- Tabla de contactos -->
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Dni)</th>
+                    <th>@Html.DisplayNameFor(model => model.Position)</th>
+                    <th>@Html.DisplayNameFor(model => model.CompanyName)</th>
+                    <th>@Html.DisplayNameFor(model => model.CocktailCandidate)</th>
+                    <th>@Html.DisplayNameFor(model => model.AttendedExpotec)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Dni)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Position)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CompanyName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CocktailCandidate)</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AttendedExpotec)
+                        </td>
+                        <td>
+                            @if (!item.AttendedExpotec.HasValue || item.AttendedExpotec == false)
+                            {
+                                <a asp-action="MarkAttendance" asp-route-id="@item.Id" class="btn btn-success btn-sm">
+                                    <i class="bi bi-check-circle"></i> Marcar Asistencia
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Asistencia Confirmada</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
